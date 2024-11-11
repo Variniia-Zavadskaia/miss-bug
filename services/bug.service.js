@@ -3,7 +3,7 @@ import { utilService } from './util.service.js'
 
 const PAGE_SIZE = 3
 
-const bugs = utilService.readJsonFile('data/bugs.json')
+const bugs = utilService.readJsonFile('data/bug.json')
 
 export const bugService = {
     query,

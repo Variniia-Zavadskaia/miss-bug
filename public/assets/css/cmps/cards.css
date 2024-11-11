@@ -1,0 +1,74 @@
+.cards {
+    grid-template-columns: repeat(auto-fill, 225px);
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+.cards.hide {
+    display: none;
+}
+
+.cards .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 5px;
+    background-color: #f8f9faa2;
+    border-radius: 9px;
+    box-shadow: 0 2px 6px 0px rgb(0 0 0 / 15%);
+}
+
+.cards .card-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.cards img {
+    width: 80%;
+    border-radius: 6px;
+}
+
+.card .card-detials {
+    width: 90%;
+}
+
+.card .card-detials .name {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.card .card-detials .detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.card-detials .detail:not(:last-child) {
+    margin-block-end: 0.2rem;
+}
+
+.card-detials .detail span:first-child {
+    color: #868e96;
+}
+
+.card .actions {
+    font-size: 0.8rem;
+    width: 100%;
+    margin-block-start: 1rem;
+}
+
+.severity1 {
+    color: tomato;
+}
+
+.severity2 {
+    color: #b69a01;
+}
+
+.severity3 {
+    color: green;
+}

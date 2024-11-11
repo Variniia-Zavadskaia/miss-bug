@@ -1,33 +1,33 @@
-import { eventBusService } from "../services/event-bus.service.js"
-const { useState, useEffect, useRef } = React
+import { eventBusService } from '../services/event-bus.service.js'
+const { useState, useEffect } = React
 
 export function UserMsg() {
+    const [msg, setMsg] = useState(null)
 
-  const [msg, setMsg] = useState(null)
-  const timeoutIdRef = useRef()
+    useEffect(() => {
+        // Here we listen to the event that we emited, its important to remove the listener
+        const removeEvent = eventBusService.on('show-user-msg', (msg) => {
+            setMsg(msg)
+            setTimeout(() => {
+                setMsg(null)
+            }, 2500)
+        })
 
-  useEffect(() => {
-    const unsubscribe = eventBusService.on('show-user-msg', (msg) => {
-      console.log('Got msg', msg)
-      setMsg(msg)
-      if (timeoutIdRef.current) {
-        timeoutIdRef.current = null
-        clearTimeout(timeoutIdRef.current)
-      }
-      timeoutIdRef.current = setTimeout(closeMsg, 3000)
-    })
-    return unsubscribe
-  }, [])
+        return () => removeEvent()
+    }, [])
 
-  function closeMsg() {
-    setMsg(null)
-  }
-
-  if (!msg) return <span></span>
-  return (
-    <section className={`user-msg ${msg.type}`}>
-      <button onClick={closeMsg}>x</button>
-      {msg.txt}
-    </section>
-  )
+    if (!msg || !msg.txt) return <span></span>
+    const msgClass = msg.type || ''
+    return (
+        <section className={'user-msg ' + msgClass}>
+            <button
+                onClick={() => {
+                    setMsg(null)
+                }}
+            >
+                x
+            </button>
+            {msg.txt}
+        </section>
+    )
 }

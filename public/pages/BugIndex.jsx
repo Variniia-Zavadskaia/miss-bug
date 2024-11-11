@@ -1,12 +1,15 @@
+const { useState, useEffect } = React
+const { Link } = ReactRouterDOM
+
+import { BugFilter } from '../cmps/BugFilter.jsx'
+import { BugList } from '../cmps/BugList.jsx'
+import { BugSort } from '../cmps/BugSort.jsx'
 import { bugService } from '../services/bug.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { BugList } from '../cmps/BugList.jsx'
-import { BugFilter } from '../cmps/BugFilter.jsx'
 
-const { useState, useEffect } = React
 
 export function BugIndex() {
-    const [bugs, setBugs] = useState(null)
+    const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
     useEffect(() => {
@@ -27,9 +30,7 @@ export function BugIndex() {
         bugService
             .remove(bugId)
             .then(() => {
-                console.log('Deleted Succesfully!')
-                const bugsToUpdate = bugs.filter((bug) => bug._id !== bugId)
-                setBugs(bugsToUpdate)
+                setBugs(prevBugs => prevBugs.filter(bug => bug._id !== bugId))
                 showSuccessMsg('Bug removed')
             })
             .catch((err) => {
@@ -38,41 +39,41 @@ export function BugIndex() {
             })
     }
 
-    function onAddBug() {
-        const bug = {
-            title: prompt('Bug title?'),
-            severity: +prompt('Bug severity?')
-        }
-        bugService
-            .save(bug)
-            .then((savedBug) => {
-                console.log('Added Bug', savedBug)
-                setBugs([...bugs, savedBug])
-                showSuccessMsg('Bug added')
-            })
-            .catch((err) => {
-                console.log('Error from onAddBug ->', err)
-                showErrorMsg('Cannot add bug')
-            })
-    }
+    // function onAddBug() {
+    //     const bug = {
+    //         title: prompt('Bug title?'),
+    //         severity: +prompt('Bug severity?')
+    //     }
+    //     bugService
+    //         .save(bug)
+    //         .then((savedBug) => {
+    //             console.log('Added Bug', savedBug)
+    //             setBugs([...bugs, savedBug])
+    //             showSuccessMsg('Bug added')
+    //         })
+    //         .catch((err) => {
+    //             console.log('Error from onAddBug ->', err)
+    //             showErrorMsg('Cannot add bug')
+    //         })
+    // }
 
-    function onEditBug(bug) {
-        const severity = +prompt('New severity?', bug._id ? bug.severity : '')
-        const description = prompt('Edit Desctiption', bug._id ? bug.description : '')
-        const bugToSave = { ...bug, severity, description }
-        bugService
-            .save(bugToSave)
-            .then((savedBug) => {
-                console.log('Updated Bug:', savedBug)
-                const bugsToUpdate = bugs.map((currBug) => (currBug._id === savedBug._id ? savedBug : currBug))
-                setBugs(bugsToUpdate)
-                showSuccessMsg('Bug updated')
-            })
-            .catch((err) => {
-                console.log('Error from onEditBug ->', err)
-                showErrorMsg('Cannot update bug')
-            })
-    }
+    // function onEditBug(bug) {
+    //     const severity = +prompt('New severity?', bug._id ? bug.severity : '')
+    //     const description = prompt('Edit Desctiption', bug._id ? bug.description : '')
+    //     const bugToSave = { ...bug, severity, description }
+    //     bugService
+    //         .save(bugToSave)
+    //         .then((savedBug) => {
+    //             console.log('Updated Bug:', savedBug)
+    //             const bugsToUpdate = bugs.map((currBug) => (currBug._id === savedBug._id ? savedBug : currBug))
+    //             setBugs(bugsToUpdate)
+    //             showSuccessMsg('Bug updated')
+    //         })
+    //         .catch((err) => {
+    //             console.log('Error from onEditBug ->', err)
+    //             showErrorMsg('Cannot update bug')
+    //         })
+    // }
 
     function onDownloadPdf() {
         // bugService
@@ -86,21 +87,56 @@ export function BugIndex() {
         window.open('/pdf', '_blank');
     }
 
-    function onSetFilterBy(newFilterBy) {
-        setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...newFilterBy }))
+    function onSetFilter(filterBy) {
+        setFilterBy((prevFilterBy) => ({ ...prevFilterBy, ...filterBy }))
     }
 
+    function onSetSort(sortBy) {
+        // setSortBy(prevSort => ({ ...prevSort, ...sortBy }))
+        setFilterBy(prevFilter => ({
+            ...prevFilter,
+            sortBy: { ...prevFilter.sortBy, ...sortBy }
+        }))
+    }
+
+    function onChangePageIdx(diff) {
+        setFilterBy(prevFilter => ({
+            ...prevFilter,
+            pageIdx: prevFilter.pageIdx + diff < 0 ? 0 : prevFilter.pageIdx + diff,
+        }))
+    }
+
+
     return (
-        <main>
-            <section className="info-actions">
-                <h3>Bugs App</h3>
-                <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
-                <button onClick={onAddBug}>Add Bug ⛐</button>
+        <div>
+            <main className="main-layout">
+                <BugFilter onSetFilter={onSetFilter} filterBy={{ ...filterBy }} />
+                <BugSort onSetSort={onSetSort} sortBy={{ ...filterBy.sortBy }} />
+                <button className="btn" >
+                    <Link to="/bug/edit">Add Bug ⛐</Link>
+                </button>
                 <button onClick={onDownloadPdf}>Download PDF</button>
-            </section>
-            <main>
-                <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+
+                <main>
+                    <BugList bugs={bugs} onRemoveBug={onRemoveBug} />
+                    <div className="paging flex">
+                        <button
+                            className="btn"
+                            onClick={() => onChangePageIdx(-1)}
+                            disabled={filterBy.pageIdx <= 0}
+                        >
+                            Previous
+                        </button>
+                        <span>{filterBy.pageIdx + 1}</span>
+                        <button
+                            className="btn"
+                            onClick={() => onChangePageIdx(1)}
+                        >
+                            Next
+                        </button>
+                    </div>
+                </main>
             </main>
-        </main>
+        </div>
     )
 }

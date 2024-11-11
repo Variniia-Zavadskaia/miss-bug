@@ -1,0 +1,22 @@
+.bug-edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.bug-edit form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    input {
+        min-width: 200px;
+    }
+}
+
+.bug-edit form div {
+    display: flex;
+    flex-direction: column;
+}

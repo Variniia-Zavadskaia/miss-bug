@@ -1,10 +1,22 @@
+export function BugPreview({ bug }) {
 
 
-export function BugPreview({bug}) {
+    const imgSrc = `https://robohash.org/api/${bug._id}`
 
-    return <article>
-        <h4>{bug.title}</h4>
-        <h1>🐛</h1>
-        <p>Severity: <span>{bug.severity}</span></p>
-    </article>
+    return (
+        <section className="bug-preview">
+            <h4>{bug.title}</h4>
+            <img src={imgSrc} alt={`Bug`} />
+            <p>
+                Severity: <span>{bug.severity}</span>
+            </p>
+            <p>
+                Owner ID: <span>{bug.ownerId}</span>
+            </p>
+            <p>
+                Created at: <span>{new Date(bug.createdAt).toDateString()}</span>
+            </p>
+
+        </section>
+    )
 }

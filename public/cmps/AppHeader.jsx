@@ -1,21 +1,22 @@
+const { useState, useEffect } = React
 const { NavLink } = ReactRouterDOM
-const { useEffect } = React
-
 import { UserMsg } from './UserMsg.jsx'
+import { showErrorMsg } from '../services/event-bus.service.js'
 
 export function AppHeader() {
-    useEffect(() => {
-        // component did mount when dependancy array is empty
-    }, [])
-
-    return (
-        <header className='container'>
-            <UserMsg />
-            <nav>
-                <NavLink to="/">Home</NavLink> |<NavLink to="/bug">Bugs</NavLink> |
-                <NavLink to="/about">About</NavLink>
-            </nav>
-            <h1>Bugs are Forever</h1>
-        </header>
-    )
+  return (
+    <React.Fragment>
+      <header className="flex align-center space-between">
+        <img className="logo" src="assets/img/minilogo.jpeg" />
+        <div className="nav-bar-container">
+          <nav className="nav-bar">
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/bug">Bugs</NavLink>
+            <NavLink to="/about">About</NavLink>
+          </nav>
+        </div>
+      </header>
+      <UserMsg />
+    </React.Fragment>
+  )
 }

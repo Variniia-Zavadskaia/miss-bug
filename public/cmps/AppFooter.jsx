@@ -1,18 +1,7 @@
-import { showSuccessMsg } from '../services/event-bus.service.js'
-const { useEffect } = React
-
-export function AppFooter () {
-
-    useEffect(() => {
-        // component did mount when dependancy array is empty
-    }, [])
-
+export function AppFooter() {
     return (
-        <footer>
-            <p>
-                coffeerights to all
-            </p>
-        </footer>
+      <footer className="flex center ">
+        <p>&copy; Coffeerights Coding Academy 2023</p>
+      </footer>
     )
-
-}
+  }

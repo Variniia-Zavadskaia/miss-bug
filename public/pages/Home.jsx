@@ -1,8 +1,8 @@
 export function Home() {
-  return (
-    <section>
-      <h2>Home is Home</h2>
-      <img src="assets/img/logo.png" />
-    </section>
-  )
-}
+    return (
+      <section className="home">
+        <h2 className="heading">Welcome to MissBug</h2>
+        <img src="assets/img/logo.jpeg" />
+      </section>
+    )
+  }

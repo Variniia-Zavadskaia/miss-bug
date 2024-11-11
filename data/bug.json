@@ -1,21 +1,15 @@
 [
     {
-        "title": "Heart",
-        "severity": 2,
-        "_id": "a15K9",
-        "createdAt": 1730833056431
-    },
-    {
         "_id": "MNO345",
         "title": "Search function not returning results",
         "description": "No results appear when searching",
         "severity": 2,
         "createdAt": 1546111399458,
-        "labels": [
-            "critical",
-            "need-CR",
-            "test-branch"
-        ]
+        "labels": ["critical", "need-CR", "test-branch"],
+        "creator": {
+            "_id": "u102",
+            "fullname": "Miki Ko"
+        }
     },
     {
         "_id": "G0053",
@@ -23,11 +17,11 @@
         "description": "problem when clicking Save",
         "severity": 1,
         "createdAt": 1542107359457,
-        "labels": [
-            "critical",
-            "QA-needed",
-            "high-priority"
-        ]
+        "labels": ["critical", "QA-needed", "high-priority"],
+        "creator": {
+            "_id": "u103",
+            "fullname": "Sara Li"
+        }
     },
     {
         "_id": "C0FF33",
@@ -35,13 +29,11 @@
         "description": "problem when clicking Save",
         "severity": 2,
         "createdAt": 1542107359456,
-        "labels": [
-            "critical",
-            "QA-needed",
-            "dev-branch"
-        ],
-        "nextBugId": "G0053",
-        "prevBugId": "K3YB0RD"
+        "labels": ["critical", "QA-needed", "dev-branch"],
+        "creator": {
+            "_id": "u104",
+            "fullname": "John Doe"
+        }
     },
     {
         "_id": "K3YB0RD",
@@ -49,23 +41,46 @@
         "description": "problem when clicking Save",
         "severity": 1,
         "createdAt": 1542107359455,
-        "labels": [
-            "low-priority",
-            "need-CR",
-            "test-branch"
-        ],
-        "updateAt": 1730827325710
+        "labels": ["low-priority", "need-CR", "test-branch"],
+        "creator": {
+            "_id": "u105",
+            "fullname": "Ella Rae"
+        }
     },
     {
-        "_id": "1NF1N1T3",
+        "_id": "10F1R1T3",
         "title": "Infinite Loop Detected",
         "description": "problem when clicking Save",
         "severity": 4,
         "createdAt": 1542107359454,
-        "labels": [
-            "critical",
-            "need-CR",
-            "dev-branch"
-        ]
+        "labels": ["critical", "need-CR", "dev-branch"],
+        "creator": {
+            "_id": "u106",
+            "fullname": "Chris Hem"
+        }
+    },
+    {
+        "_id": "A6F1N1T5",
+        "title": "UI Freezes on Login",
+        "description": "application becomes unresponsive after login attempt",
+        "severity": 3,
+        "createdAt": 1542107359463,
+        "labels": ["high-priority", "frontend", "dev-branch"],
+        "creator": {
+            "_id": "u108",
+            "fullname": "James Li"
+        }
+    },
+    {
+        "_id": "6NF1M1T6",
+        "title": "Missing Data in Reports",
+        "description": "report data appears incomplete after generation",
+        "severity": 4,
+        "createdAt": 1542107359464,
+        "labels": ["data-integrity", "analytics", "need-CR"],
+        "creator": {
+            "_id": "u109",
+            "fullname": "Alex Wu"
+        }
     }
 ]

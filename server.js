@@ -39,7 +39,7 @@ app.get('/api/bug/:bugId', (req, res) => {
     res.cookie('visitedBugIds', visitedBugIds, { maxAge: 1000 * 60 * 3 })
 
     bugService
-        .save(bugToSave)
+        .save(bugId)
         .then((savedBug) => res.send(savedBug))
         .catch((err) => {
             loggerService.error('Cannot add bug', err)

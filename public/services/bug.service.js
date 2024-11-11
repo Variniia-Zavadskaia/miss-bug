@@ -9,7 +9,8 @@ export const bugService = {
     save,
     remove,
     getById,
-    getEmptyBug
+    getEmptyBug,
+    getDefaultFilter
 }
 
 function query(filterBy) {

@@ -1,12 +1,18 @@
 import fs from 'fs'
-import http from 'http'
-import https from 'https'
+import fr from 'follow-redirects'
+
+const { http, https } = fr
 
 export const utilService = {
     readJsonFile,
-    makeId,
     download,
-    httpGet
+    httpGet,
+    makeId,
+    getRandomIntIc
+}
+
+function getRandomIntIc(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function readJsonFile(path) {
@@ -27,15 +33,6 @@ function download(url, fileName) {
             })
         })
     })
-}
-
-function makeId(length = 5) {
-    let text = ''
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    for (let i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length))
-    }
-    return text
 }
 
 function httpGet(url) {
@@ -60,4 +57,13 @@ function httpGet(url) {
         req.end()
     })
 
+}
+
+function makeId(length = 5) {
+    let text = ''
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return text
 }

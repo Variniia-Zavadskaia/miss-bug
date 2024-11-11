@@ -12,28 +12,15 @@ app.use(express.static('public'))
 app.use(cookieParser())
 app.use(express.json())
 
-// Middleware to manage visited bugs
-function manageVisitedBugs(req, res, next) {
-    const { bugId } = req.params;
-    let visitedBugs = req.cookies.visitedBugs || [];
-
-    if (!visitedBugs.includes(bugId)) {
-        visitedBugs.push(bugId);
-    }
-    if (visitedBugs.length > 3) {
-        loggerService.error(`User visited more than 3 bugs: ${visitedBugs}`);
-        return res.status(401).send('Wait for a bit');
-    }
-
-    res.cookie('visitedBugs', visitedBugs, { maxAge: 1000 * 60 * 60 });
-    next();
-}
-
+// List
 app.get('/api/bug', (req, res) => {
     const filterBy = {
         txt: req.query.txt || '',
-        minSeverity: +req.query.minSeverity || 0
+        severity: +req.query.severity || 0,
+        labels: req.query.labels || ''
     }
+    if (req.query.pageIdx) filterBy.pageIdx = req.query.pageIdx
+    if (req.query.sortBy) filterBy.sortBy = JSON.parse(req.query.sortBy)
 
     bugService
         .query(filterBy)
@@ -43,9 +30,13 @@ app.get('/api/bug', (req, res) => {
             res.status(500).send('Cannot get bugs')
         })
 })
-
-app.post('/api/bug', (req, res) => {
-    const bugToSave = req.body
+// Read
+app.get('/api/bug/:bugId', (req, res) => {
+    const { bugId } = req.params
+    let visitedBugIds = req.cookies.visitedBugIds || []
+    if (!visitedBugIds.includes(bugId)) visitedBugIds.push(bugId)
+    if (visitedBugIds.length > 3) return res.status(401).send('Wait for a bit')
+    res.cookie('visitedBugIds', visitedBugIds, { maxAge: 1000 * 60 * 3 })
 
     bugService
         .save(bugToSave)
@@ -56,28 +47,7 @@ app.post('/api/bug', (req, res) => {
         })
 })
 
-app.put('/api/bug/:bugId', (req, res) => {
-    const bugToSave = req.body
-
-    bugService.save(bugToSave)
-        .then(savedBug => res.send(savedBug))
-        .catch((err) => {
-            loggerService.error('Cannot update bug', err)
-            res.status(500).send('Cannot update bug', err)
-        })
-})
-
-app.get('/api/bug/:bugId', manageVisitedBugs, (req, res) => {
-    const { bugId } = req.params;
-
-    bugService.getById(bugId)
-        .then(bug => res.send(bug))
-        .catch(err => {
-            loggerService.error('Cannot get bug', err);
-            res.status(500).send('Cannot get bug');
-        });
-})
-
+// Delete
 app.delete('/api/bug/:bugId', (req, res) => {
     const { bugId } = req.params
     bugService
@@ -86,6 +56,32 @@ app.delete('/api/bug/:bugId', (req, res) => {
         .catch((err) => {
             loggerService.error('cannot remove bug', err)
             res.status(500).send('cannot remove bug')
+        })
+})
+
+// Create
+app.post('/api/bug', (req, res) => {
+    const bug = req.body
+    bugService.save(bug)
+        .then((addedBug) => {
+            res.send(addedBug)
+        })
+        .catch((err) => {
+            loggerService.error('Had issues adding:', err)
+            res.status(500).send('Had issues adding:', err)
+        })
+})
+
+// Update
+app.put('/api/bug', (req, res) => {
+    const bug = req.body
+    bugService.save(bug)
+        .then(savedBug => {
+            res.send(savedBug)
+        })
+        .catch((err) => {
+            loggerService.error('Cannot update bug', err)
+            res.status(500).send('Cannot update bug', err)
         })
 })
 
@@ -113,6 +109,10 @@ app.get('/api/logs', (req, res) => {
     res.sendFile(path + '/logs/backend.log')
 })
 
+// Fallback route
+app.get('/**', (req, res) => {
+    res.sendFile(path.resolve('public/index.html'))
+})
 
 const port = 3030
 // app.get('/', (req, res) => res.send('Hello there'))

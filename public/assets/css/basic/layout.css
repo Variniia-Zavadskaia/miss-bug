@@ -1,9 +1,17 @@
 .main-layout {
-    /* padding-inline-start: var(--spacing-large);
-    padding-inline-end: var(--spacing-large);
-    margin-top: 3rem; */
-    max-width: 80vw;
+    display: flex;
+    flex-direction: column;
+    max-width: 90vw;
     margin: 2rem auto;
+}
+
+.content-layout {
+    display: flex;
+    gap: 20px;
+}
+
+.bug-list-container {
+    flex: 1;
 }
 
 .paging {

@@ -1,8 +1,7 @@
 import fs from 'fs'
-import { utilService } from './util.service.js'
-let gBugs = utilService.readJsonFile('data/bug.json')
 
-const PAGE_SIZE = 5
+import { utilService } from './util.service.js'
+import { loggerService } from './logger.service.js'
 
 export const bugService = {
     query,
@@ -10,94 +9,79 @@ export const bugService = {
     remove,
     save
 }
+const PAGE_SIZE = 5
+const bugs = utilService.readJsonFile('data/bug.json')
+
 
 function query(filterBy = { txt: '', severity: 0, sortBy: { type: 'title', desc: 1 } }) {
-    var bugs = gBugs
-    // SS - Filter~
-    if (filterBy.txt) {
+    // if (filterBy.txt) {
         const regex = new RegExp(filterBy.txt, 'i')
-        bugs = gBugs.filter(bug => regex.test(bug.title))
-    }
+        var bugsToReturn = bugs.filter(bug => regex.test(bug.title))
+    // }
 
     if (filterBy.severity) {
-        bugs = bugs.filter(bug => bug.severity > filterBy.severity)
+        bugsToReturn = bugs.filter(bug => bug.severity > filterBy.severity)
     }
 
-    if (filterBy.labels) {
-        const labelsToFilter = filterBy.labels
-        bugs = bugs.filter((bug) =>
-            labelsToFilter.every((label) => bug.labels.includes(label))
-        )
-    }
+    // if (filterBy.labels) {
+    //     const labelsToFilter = filterBy.labels
+    //     bugs = bugs.filter((bug) =>
+    //         labelsToFilter.every((label) => bug.labels.includes(label))
+    //     )
+    // }
 
     // sort
     const sortBy = filterBy.sortBy
     if (sortBy.type === 'title') {
-        bugs.sort((b1, b2) => (sortBy.desc) * (b1.title.localeCompare(b2.title)))
+        bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.title.localeCompare(b2.title)))
     }
     if (sortBy.type === 'createdAt') {
-        bugs.sort((b1, b2) => (sortBy.desc) * (b1.createdAt - b2.createdAt))
+        bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.createdAt - b2.createdAt))
     }
     if (sortBy.type === 'severity') {
-        bugs.sort((b1, b2) => (sortBy.desc) * (b1.severity - b2.severity))
+        bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.severity - b2.severity))
     }
 
     // Pagination
     if (filterBy.pageIdx !== undefined) {
         const startIdx = filterBy.pageIdx * PAGE_SIZE;
-        bugs = bugs.slice(startIdx, startIdx + PAGE_SIZE)
+        bugsToReturn = bugsToReturn.slice(startIdx, startIdx + PAGE_SIZE)
     }
 
-    return Promise.resolve(bugs)
+    return Promise.resolve(bugsToReturn)
 }
 
-// function getNextBug(bugs) {
-//     bugs.forEach((bug, idx) => {
-//         bug.prevId = bugs[idx - 1] ? bugs[idx - 1]._id : bugs[bugs.length - 1]._id
-//         bug.nextId = bugs[idx + 1] ? bugs[idx + 1]._id : bugs[0]._id
-//     });
-// }
-
 function getById(bugId) {
-    const bug = gBugs.find(bug => bug._id === bugId)
+    const bug = bugs.find(bug => bug._id === bugId)
     if (!bug) return Promise.reject('No bug found')
     else return Promise.resolve(bug)
 }
 
 function remove(bugId, userId) {
-    const idx = gBugs.findIndex(bug => bug._id === bugId)
+    const idx = bugs.findIndex(bug => bug._id === bugId)
     if (idx === -1) return Promise.reject('No bug found')
-    gBugs.splice(idx, 1)
+        bugs.splice(idx, 1)
     return _saveBugsToFile()
 }
 
 function save(bug) {
     if (bug._id) {
-        const idx = gBugs.findIndex(currBug => currBug._id === bug._id)
-        gBugs[idx] = bug
+        const idx = bugs.findIndex(currBug => currBug._id === bug._id)
+        bugs[idx] = bug
     } else {
         bug.createdAt = Date.now()
         bug.labels = ['critical', 'need-CR']
         bug._id = _makeId()
         // bug.description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at.'
-        gBugs.push(bug)
+        bugs.push(bug)
 
     }
     return _saveBugsToFile().then(() => bug)
 }
 
-function _makeId(length = 5) {
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    var txt = ''
-    for (let i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length))
-    }
-    return txt
-}
-
 function _saveBugsToFile() {
     return new Promise((resolve, reject) => {
-        fs.writeFile('data/bug.json', JSON.stringify(gBugs, null, 2), (err) => {
+        fs.writeFile('data/bug.json', JSON.stringify(bugs, null, 2), (err) => {
             if (err) {
                 console.log(err);
                 reject('Cannot write to file')

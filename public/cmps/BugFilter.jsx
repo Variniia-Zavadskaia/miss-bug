@@ -47,7 +47,7 @@ export function BugFilter({ filterBy, onSetFilter }) {
                 value={severity}
                 onChange={handleChange}
             />
-            <LabelSelector onLabelChange={onLabelChange} />
+            {/* <LabelSelector onLabelChange={onLabelChange} /> */}
         </form>
     )
 }

@@ -39,51 +39,7 @@ export function BugIndex() {
             })
     }
 
-    // function onAddBug() {
-    //     const bug = {
-    //         title: prompt('Bug title?'),
-    //         severity: +prompt('Bug severity?')
-    //     }
-    //     bugService
-    //         .save(bug)
-    //         .then((savedBug) => {
-    //             console.log('Added Bug', savedBug)
-    //             setBugs([...bugs, savedBug])
-    //             showSuccessMsg('Bug added')
-    //         })
-    //         .catch((err) => {
-    //             console.log('Error from onAddBug ->', err)
-    //             showErrorMsg('Cannot add bug')
-    //         })
-    // }
-
-    // function onEditBug(bug) {
-    //     const severity = +prompt('New severity?', bug._id ? bug.severity : '')
-    //     const description = prompt('Edit Desctiption', bug._id ? bug.description : '')
-    //     const bugToSave = { ...bug, severity, description }
-    //     bugService
-    //         .save(bugToSave)
-    //         .then((savedBug) => {
-    //             console.log('Updated Bug:', savedBug)
-    //             const bugsToUpdate = bugs.map((currBug) => (currBug._id === savedBug._id ? savedBug : currBug))
-    //             setBugs(bugsToUpdate)
-    //             showSuccessMsg('Bug updated')
-    //         })
-    //         .catch((err) => {
-    //             console.log('Error from onEditBug ->', err)
-    //             showErrorMsg('Cannot update bug')
-    //         })
-    // }
-
     function onDownloadPdf() {
-        // bugService
-        //   .downloadPdf()
-        //   .then(() => {
-        //     console.log('PDF Downloaded')
-        //   })
-        //   .catch((err) => {
-        //     console.error('Failed to generate PDF:', err)
-        //   })
         window.open('/pdf', '_blank');
     }
 
@@ -106,36 +62,39 @@ export function BugIndex() {
         }))
     }
 
-
     return (
         <div>
             <main className="main-layout">
-                <BugFilter onSetFilter={onSetFilter} filterBy={{ ...filterBy }} />
-                <BugSort onSetSort={onSetSort} sortBy={{ ...filterBy.sortBy }} />
-                <button className="btn" >
-                    <Link to="/bug/edit">Add Bug ⛐</Link>
-                </button>
-                <button onClick={onDownloadPdf}>Download PDF</button>
-
-                <main>
-                    <BugList bugs={bugs} onRemoveBug={onRemoveBug} />
-                    <div className="paging flex">
-                        <button
-                            className="btn"
-                            onClick={() => onChangePageIdx(-1)}
-                            disabled={filterBy.pageIdx <= 0}
-                        >
-                            Previous
+                <div className="content-layout">
+                    <div>
+                        <BugFilter onSetFilter={onSetFilter} filterBy={{ ...filterBy }} />
+                        <BugSort onSetSort={onSetSort} sortBy={{ ...filterBy.sortBy }} />
+                        <button className="btn">
+                            <Link to="/bug/edit">Add Bug ⛐</Link>
                         </button>
-                        <span>{filterBy.pageIdx + 1}</span>
-                        <button
-                            className="btn"
-                            onClick={() => onChangePageIdx(1)}
-                        >
-                            Next
-                        </button>
+                        <button className="btn" onClick={onDownloadPdf}>Download PDF</button>
                     </div>
-                </main>
+
+                    <div className="bug-list-container">
+                        <BugList bugs={bugs} onRemoveBug={onRemoveBug} />
+                        <div className="paging flex">
+                            <button
+                                className="btn"
+                                onClick={() => onChangePageIdx(-1)}
+                                disabled={filterBy.pageIdx <= 0}
+                            >
+                                Previous
+                            </button>
+                            <span>{filterBy.pageIdx + 1}</span>
+                            <button
+                                className="btn"
+                                onClick={() => onChangePageIdx(1)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     )

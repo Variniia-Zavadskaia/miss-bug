@@ -1,7 +1,7 @@
 export function AppFooter() {
     return (
-      <footer className="flex center ">
-        <p>&copy; Coffeerights Coding Academy 2023</p>
-      </footer>
+        <footer className="flex center ">
+            <p>&copy; 2024 MissBug. All rights reserved.</p>
+        </footer>
     )
-  }
+}

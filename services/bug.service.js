@@ -15,8 +15,8 @@ const bugs = utilService.readJsonFile('data/bug.json')
 
 function query(filterBy = { txt: '', severity: 0, sortBy: { type: 'title', desc: 1 } }) {
     // if (filterBy.txt) {
-        const regex = new RegExp(filterBy.txt, 'i')
-        var bugsToReturn = bugs.filter(bug => regex.test(bug.title))
+    const regex = new RegExp(filterBy.txt, 'i')
+    var bugsToReturn = bugs.filter(bug => regex.test(bug.title))
     // }
 
     if (filterBy.severity) {
@@ -57,24 +57,30 @@ function getById(bugId) {
     else return Promise.resolve(bug)
 }
 
-function remove(bugId, userId) {
+function remove(bugId, user) {
     const idx = bugs.findIndex(bug => bug._id === bugId)
     if (idx === -1) return Promise.reject('No bug found')
-        bugs.splice(idx, 1)
+
+    if (!user.isAdmin && bugs[idx].owner._id !== user._id) return Promise.reject('Not your bug')
+
+    bugs.splice(idx, 1)
     return _saveBugsToFile()
 }
 
-function save(bug) {
+function save(bug, user) {
     if (bug._id) {
-        const idx = bugs.findIndex(currBug => currBug._id === bug._id)
-        bugs[idx] = bug
+        if (!user.isAdmin && bug.owner._id !== user._id) return Promise.reject('Not your bug')
+
+        const bugToUpdate = bugs.findIndex(currBug => currBug._id === bug._id)
+        bugToUpdate.title = bug.title
+        bugToUpdate.severity = bug.severity
     } else {
+        bug._id = utilService.makeId()
         bug.createdAt = Date.now()
-        bug.labels = ['critical', 'need-CR']
-        bug._id = _makeId()
+        bug.owner = user
+        // bug.labels = ['critical', 'need-CR']
         // bug.description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at.'
         bugs.push(bug)
-
     }
     return _saveBugsToFile().then(() => bug)
 }
@@ -83,12 +89,10 @@ function _saveBugsToFile() {
     return new Promise((resolve, reject) => {
         fs.writeFile('data/bug.json', JSON.stringify(bugs, null, 2), (err) => {
             if (err) {
-                console.log(err);
-                reject('Cannot write to file')
-            } else {
-                // console.log('Wrote Successfully!')
-                resolve()
+                loggerService.error('Cannot write to bugs file', err)
+                return reject(err)
             }
+            resolve()
         })
     })
 }

@@ -1,19 +1,16 @@
 header {
-    /* background-image: linear-gradient(to right bottom, #234567f1, #2345679c); */
-    padding: 0.8rem;
-    border-radius: 3px;
-    border: 1px solid var(--primary-color);
-    border-top: none;
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.1);
+    background-color: #1e293b;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
 }
 
-header .logo {
-    width: 3rem;
-    margin-inline-end: 1rem;
+.logo {
+    width: 50px;
+    height: auto;
+    border-radius: 50%;
 }
 
-header h1 {
-    font-size: 3rem;
-    color: #fff;
-    font-family: cursive;
-}

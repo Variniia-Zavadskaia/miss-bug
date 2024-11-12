@@ -8,7 +8,8 @@
         "labels": ["critical", "need-CR", "test-branch"],
         "creator": {
             "_id": "u102",
-            "fullname": "Miki Ko"
+            "fullname": "Miki Ko",
+            "isAdmin": true
         }
     },
     {
@@ -20,7 +21,8 @@
         "labels": ["critical", "QA-needed", "high-priority"],
         "creator": {
             "_id": "u103",
-            "fullname": "Sara Li"
+            "fullname": "Sara Li",
+            "isAdmin": true
         }
     },
     {
@@ -55,8 +57,9 @@
         "createdAt": 1542107359454,
         "labels": ["critical", "need-CR", "dev-branch"],
         "creator": {
-            "_id": "u106",
-            "fullname": "Chris Hem"
+            "_id": "u102",
+            "fullname": "Miki Ko",
+            "isAdmin": true
         }
     },
     {
@@ -67,8 +70,8 @@
         "createdAt": 1542107359463,
         "labels": ["high-priority", "frontend", "dev-branch"],
         "creator": {
-            "_id": "u108",
-            "fullname": "James Li"
+            "_id": "u105",
+            "fullname": "Ella Rae"
         }
     },
     {
@@ -79,8 +82,9 @@
         "createdAt": 1542107359464,
         "labels": ["data-integrity", "analytics", "need-CR"],
         "creator": {
-            "_id": "u109",
-            "fullname": "Alex Wu"
+            "_id": "u102",
+            "fullname": "Miki Ko",
+            "isAdmin": true
         }
     }
 ]

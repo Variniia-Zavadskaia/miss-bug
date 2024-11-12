@@ -1,0 +1,28 @@
+[
+    {
+        "_id": "u102",
+        "username": "miki",
+        "fullname": "Miki Ko",
+        "password": "miki",
+        "isAdmin": true
+    },
+    {
+        "_id": "u103",
+        "username": "saki",
+        "fullname": "Sara Li",
+        "password": "saki",
+        "isAdmin": true
+    },
+    {
+        "_id": "u104",
+        "username": "john",
+        "fullname": "John Doe",
+        "password": "john"
+    },
+    {
+        "_id": "u105",
+        "username": "ella",
+        "fullname": "Ella Rae",
+        "password": "ella"
+    }
+]

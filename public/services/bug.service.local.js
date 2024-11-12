@@ -1,7 +1,8 @@
-import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
+import { storageService } from './async-storage.service.js'
+import { userService } from './user.service.local.js'
 
-const STORAGE_KEY = 'bugDB'
+const BUG_KEY = 'bugDB'
 
 export const bugService = {
     query,
@@ -12,18 +13,18 @@ export const bugService = {
 
 
 function query() {
-    return storageService.query(STORAGE_KEY)
+    return storageService.query(BUG_KEY)
 }
 function getById(bugId) {
-    return storageService.get(STORAGE_KEY, bugId)
+    return storageService.get(BUG_KEY, bugId)
 }
 function remove(bugId) {
-    return storageService.remove(STORAGE_KEY, bugId)
+    return storageService.remove(BUG_KEY, bugId)
 }
 function save(bug) {
     if (bug._id) {
-        return storageService.put(STORAGE_KEY, bug)
+        return storageService.put(BUG_KEY, bug)
     } else {
-        return storageService.post(STORAGE_KEY, bug)
+        return storageService.post(BUG_KEY, bug)
     }
 }

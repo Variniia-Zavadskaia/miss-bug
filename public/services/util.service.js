@@ -1,7 +1,10 @@
 export const utilService = {
     makeId,
-    makeLorem,
-    getRandomIntInclusive
+	makeLorem,
+	getRandomIntInclusive,
+	loadFromStorage,
+	saveToStorage,
+	debounce,
 }
 
 function makeId(length = 6) {
@@ -31,3 +34,24 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
 
+function saveToStorage(key, value) {
+	localStorage.setItem(key, JSON.stringify(value))
+}
+
+function loadFromStorage(key) {
+	const data = localStorage.getItem(key)
+	return data ? JSON.parse(data) : undefined
+}
+
+function debounce(fn, wait) {
+	let timer
+	return function (...args) {
+		if (timer) {
+			clearTimeout(timer) // clear any pre-existing timer
+		}
+		const context = this // get the current context
+		timer = setTimeout(() => {
+			fn.apply(context, args) // call the function if time expires
+		}, wait)
+	}
+}

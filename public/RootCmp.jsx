@@ -1,11 +1,11 @@
-const Router = ReactRouterDOM.HashRouter
-// const Router = ReactRouterDOM.BrowserRouter
+const Router = ReactRouterDOM.BrowserRouter
 const { Route, Routes } = ReactRouterDOM
 
 import { AppHeader } from './cmps/AppHeader.jsx'
 import { AppFooter } from './cmps/AppFooter.jsx'
 import { Home } from './pages/Home.jsx'
 import { AboutUs } from './pages/AboutUs.jsx'
+import { UserDetails } from "./pages/UserDetails.jsx";
 import { BugIndex } from './pages/BugIndex.jsx'
 import { BugDetails } from './pages/BugDetails.jsx'
 import { BugEdit } from './pages/BugEdit.jsx'
@@ -17,12 +17,13 @@ export function App() {
                 <AppHeader />
                 <main>
                     <Routes>
-                        <Route element={<Home />} path={'/'} />
-                        <Route element={<BugIndex />} path={'/bug'} />
-                        <Route element={<BugEdit />} path={'/bug/edit'} />
-                        <Route element={<BugEdit />} path={'/bug/edit/:bugId'} />
-                        <Route element={<BugDetails />} path={'/bug/:bugId'} />
-                        <Route element={<AboutUs />} path={'/about'} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about" element={<AboutUs />}/>
+                        <Route path="/bug/:bugId" element={<BugDetails />} />
+                        <Route path="/bug/edit/:bugId" element={<BugEdit />} />
+                        <Route path="/bug/edit" element={<BugEdit />} />
+                        <Route path="/bug" element={<BugIndex />} />
+                        <Route path="/user/:userId" element={<UserDetails />} />
                     </Routes>
                 </main>
                 <AppFooter />

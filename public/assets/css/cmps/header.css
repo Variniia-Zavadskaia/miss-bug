@@ -14,3 +14,10 @@ header {
     border-radius: 50%;
 }
 
+.username {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    margin-right: 1rem;
+}

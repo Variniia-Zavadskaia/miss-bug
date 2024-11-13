@@ -37,8 +37,8 @@ export function AppHeader() {
 
                 {user ? (
 				<section className="nav-bar-container">
-					<Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
-					<button onClick={onLogout}>Logout</button>
+					<Link className="username" to={`/user/${user._id}`}>Hello {user.fullname}</Link>
+					<button className="btnlog" onClick={onLogout}>Logout</button>
 				</section>
 			) : (
 				<section>

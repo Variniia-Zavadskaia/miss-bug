@@ -21,7 +21,7 @@ function get(bugId) {
 }
 
 function remove(bugId) {
-    return axios.delete(BASE_URL + bugId).then(res => res.data)
+    return axios.delete(BASE_URL + bugId)
 }
 
 function save(bug) {
@@ -41,6 +41,15 @@ function getEmptyBug() {
 }
 
 function getDefaultFilter() {
-    return { txt: '', severity: '', labels: '', pageIdx: 0, sortBy: { type: 'title', desc: 1 } }
+    return {
+        txt: '',
+        severity: '',
+        // labels: '',
+        pageIdx: 0,
+        sortBy: {
+            type: 'title', desc: 1
+
+        }
+    }
 }
 

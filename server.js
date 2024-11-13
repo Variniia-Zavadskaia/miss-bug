@@ -18,7 +18,7 @@ app.get('/api/bug', (req, res) => {
     const filterBy = {
         txt: req.query.txt || '',
         severity: +req.query.severity || 0,
-        labels: req.query.labels || ''
+        // labels: req.query.labels || ''
     }
     if (req.query.pageIdx) filterBy.pageIdx = req.query.pageIdx
     if (req.query.sortBy) filterBy.sortBy = JSON.parse(req.query.sortBy)
@@ -40,11 +40,11 @@ app.get('/api/bug/:bugId', (req, res) => {
     res.cookie('visitedBugIds', visitedBugIds, { maxAge: 1000 * 60 * 3 })
 
     bugService
-        .save(bugId)
-        .then((savedBug) => res.send(savedBug))
+        .getById(bugId)
+        .then((bug) => res.send(bug))
         .catch((err) => {
-            loggerService.error('Cannot add bug', err)
-            res.status(500).send('Cannot add bug', err)
+            loggerService.error('Cannot get bug', err)
+            res.status(500).send('Cannot get bug', err)
         })
 })
 
@@ -83,8 +83,8 @@ app.put('/api/bug', (req, res) => {
             res.send(savedBug)
         })
         .catch((err) => {
-            loggerService.error('Cannot update bug', err)
-            res.status(500).send('Cannot update bug', err)
+            loggerService.error('Had issues editing:', err)
+            res.status(500).send('Had issues editing:', err)
         })
 })
 

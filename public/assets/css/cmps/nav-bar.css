@@ -28,7 +28,7 @@
     gap: 10px;
 }
 
-button {
+.btnlog {
     padding: 5px 10px;
     border: none;
     background-color: #38bdf8;
@@ -39,6 +39,6 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.btnlog:hover {
     background-color: #0284c7;
 }

@@ -14,10 +14,12 @@ const bugs = utilService.readJsonFile('data/bug.json')
 
 
 function query(filterBy = { txt: '', severity: 0, sortBy: { type: 'title', desc: 1 } }) {
-    // if (filterBy.txt) {
+    var bugsToReturn = bugs
+
+    if (filterBy.txt) {
     const regex = new RegExp(filterBy.txt, 'i')
-    var bugsToReturn = bugs.filter(bug => regex.test(bug.title))
-    // }
+    bugsToReturn = bugs.filter(bug => regex.test(bug.title))
+    }
 
     if (filterBy.severity) {
         bugsToReturn = bugs.filter(bug => bug.severity > filterBy.severity)
@@ -53,8 +55,7 @@ function query(filterBy = { txt: '', severity: 0, sortBy: { type: 'title', desc:
 
 function getById(bugId) {
     const bug = bugs.find(bug => bug._id === bugId)
-    if (!bug) return Promise.reject('No bug found')
-    else return Promise.resolve(bug)
+    return Promise.resolve(bug)
 }
 
 function remove(bugId, user) {
@@ -71,7 +72,7 @@ function save(bug, user) {
     if (bug._id) {
         if (!user.isAdmin && bug.owner._id !== user._id) return Promise.reject('Not your bug')
 
-        const bugToUpdate = bugs.findIndex(currBug => currBug._id === bug._id)
+        const bugToUpdate = bugs.find(currBug => currBug._id === bug._id)
         bugToUpdate.title = bug.title
         bugToUpdate.severity = bug.severity
     } else {

@@ -32,6 +32,7 @@ function save(bug) {
     if (bug._id) {
         return storageService.put(BUG_KEY, bug)
     } else {
+        bug.owner = userService.getLoggedinUser()
         return storageService.post(BUG_KEY, bug)
     }
 }
@@ -45,5 +46,14 @@ function getEmptyBug() {
 }
 
 function getDefaultFilter() {
-    return { txt: '', severity: '', labels: '', pageIdx: 0, sortBy: { type: 'title', desc: 1 } }
+    return {
+        txt: '',
+        severity: '',
+        // labels: '',
+        pageIdx: 0,
+        sortBy: {
+            type: 'title', desc: 1
+
+        }
+    }
 }

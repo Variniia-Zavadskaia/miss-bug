@@ -45,13 +45,13 @@ function query(filterBy = { txt: '', severity: 0, userId: '' }, sortBy = { type:
     // sort
     // const sortBy = filterBy.sortBy
     if (sortBy.type === 'title') {
-        bugs.sort((b1, b2) => (sortBy.desc) * (b1.title.localeCompare(b2.title)))
+        bugs.sort((b1, b2) => +sortBy.desc * b1.title.localeCompare(b2.title))
     }
     if (sortBy.type === 'createdAt') {
-        bugs.sort((b1, b2) => (sortBy.desc) * (b1.createdAt - b2.createdAt))
+        bugs.sort((b1, b2) => +sortBy.desc * (b1.createdAt - b2.createdAt))
     }
     if (sortBy.type === 'severity') {
-        bugs.sort((b1, b2) => (sortBy.desc) * (b1.severity - b2.severity))
+        bugs.sort((b1, b2) => +sortBy.desc * (b1.severity - b2.severity))
     }
 
     // Pagination
@@ -64,41 +64,59 @@ function query(filterBy = { txt: '', severity: 0, userId: '' }, sortBy = { type:
 }
 
 function getById(bugId) {
-    const bug = bugs.find(bug => bug._id === bugId)
-    return Promise.resolve(bug)
+    const bug = gBugs.find((bug) => bug._id === bugId)
+    if (!bug) return Promise.reject('No bug found')
+    else return Promise.resolve(bug)
 }
 
-function remove(bugId, user) {
-    const idx = bugs.findIndex(bug => bug._id === bugId)
+function remove(bugId, loggedinUser) {
+    const idx = gBugs.findIndex(bug => bug._id === bugId)
     if (idx === -1) return Promise.reject('No bug found')
 
-    if (!user.isAdmin && bugs[idx].owner._id !== user._id) return Promise.reject('Not your bug')
+    if (gBugs[idx].creator._id !== loggedinUser._id && !loggedinUser.isAdmin) {
+        return Promise.reject('Not authorized delete this bug')
+    }
 
-    bugs.splice(idx, 1)
+    gBugs.splice(idx, 1)
     return _saveBugsToFile()
 }
 
-function save(bug, user) {
+function save(bug, loggedinUser) {
     if (bug._id) {
-        if (!user.isAdmin && bug.owner._id !== user._id) return Promise.reject('Not your bug')
+        const idx = gBugs.findIndex((currBug) => currBug._id === bug._id)
+        if (idx === -1) return Promise.reject('No such bug')
 
-        const bugToUpdate = bugs.find(currBug => currBug._id === bug._id)
-        bugToUpdate.title = bug.title
-        bugToUpdate.severity = bug.severity
+        if (gBugs[idx].creator._id !== loggedinUser._id && !loggedinUser.isAdmin) {
+            return Promise.reject('Not authorized update this bug')
+        }
+        gBugs[idx] = bug
     } else {
         bug._id = utilService.makeId()
         bug.createdAt = Date.now()
-        bug.owner = user
-        // bug.labels = ['critical', 'need-CR']
-        // bug.description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at.'
-        bugs.push(bug)
+        // bug.owner = user
+        bug.labels = ['critical', 'need-CR']
+        bug.description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at.'
+        gBugs.push(bug)
     }
     return _saveBugsToFile().then(() => bug)
 }
 
+function hasBugs(userId) {
+    const hasBugs = gBugs.some((bug) => bug.creator._id === userId)
+
+    if (hasBugs) return Promise.reject('Cannot remove user with bugs')
+
+    return Promise.resolve()
+}
+
+function getPdf() {
+    pdfService.buildBugsPDF(gBugs) //pdf bonus
+    return Promise.resolve()
+}
+
 function _saveBugsToFile() {
     return new Promise((resolve, reject) => {
-        fs.writeFile('data/bug.json', JSON.stringify(bugs, null, 2), (err) => {
+        fs.writeFile('data/bug.json', JSON.stringify(gBugs, null, 2), (err) => {
             if (err) {
                 loggerService.error('Cannot write to bugs file', err)
                 return reject(err)

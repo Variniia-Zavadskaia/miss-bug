@@ -2,38 +2,42 @@ import fs from 'fs'
 
 import { utilService } from './util.service.js'
 import { loggerService } from './logger.service.js'
+import { pdfService } from './pdf.service.js'
+
+const gBugs = utilService.readJsonFile('data/bug.json')
+const PAGE_SIZE = 5
 
 export const bugService = {
     query,
     getById,
     remove,
-    save
+    save,
+    hasBugs,
+    getPdf
 }
-const PAGE_SIZE = 5
-const bugs = utilService.readJsonFile('data/bug.json')
 
 
 function query(filterBy = { txt: '', severity: 0, userId: '' }, sortBy = { type: '', desc: 1 }) {
-    var bugsToReturn = bugs
+    var bugs = gBugs
 
     if (filterBy.txt) {
         const regex = new RegExp(filterBy.txt, 'i')
-        bugsToReturn = bugs.filter(bug => regex.test(bug.title))
+        bugs = gBugs.filter(bug => regex.test(bug.title))
     }
 
     if (filterBy.severity) {
-        bugsToReturn = bugsToReturn.filter(bug => bug.severity > filterBy.severity)
+        bugs = bugs.filter(bug => bug.severity > filterBy.severity)
     }
 
     console.log('filterBy.userId:', filterBy.userId)
 
     if (filterBy.userId) {
-        bugsToReturn = bugsToReturn.filter((bug) => bug.creator._id === filterBy.userId)
+        bugs = bugs.filter((bug) => bug.creator._id === filterBy.userId)
     }
 
     if (filterBy.labels) {
         const labelsToFilter = filterBy.labels
-        bugsToReturn = bugsToReturn.filter((bug) =>
+        bugs = bugs.filter((bug) =>
             labelsToFilter.some((label) => bug.labels.includes(label))
         )
     }
@@ -41,22 +45,22 @@ function query(filterBy = { txt: '', severity: 0, userId: '' }, sortBy = { type:
     // sort
     // const sortBy = filterBy.sortBy
     if (sortBy.type === 'title') {
-        bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.title.localeCompare(b2.title)))
+        bugs.sort((b1, b2) => (sortBy.desc) * (b1.title.localeCompare(b2.title)))
     }
     if (sortBy.type === 'createdAt') {
-        bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.createdAt - b2.createdAt))
+        bugs.sort((b1, b2) => (sortBy.desc) * (b1.createdAt - b2.createdAt))
     }
     if (sortBy.type === 'severity') {
-        bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.severity - b2.severity))
+        bugs.sort((b1, b2) => (sortBy.desc) * (b1.severity - b2.severity))
     }
 
     // Pagination
     if (filterBy.pageIdx !== undefined) {
         const startIdx = filterBy.pageIdx * PAGE_SIZE;
-        bugsToReturn = bugsToReturn.slice(startIdx, startIdx + PAGE_SIZE)
+        bugs = bugs.slice(startIdx, startIdx + PAGE_SIZE)
     }
 
-    return Promise.resolve(bugsToReturn)
+    return Promise.resolve(bugs)
 }
 
 function getById(bugId) {

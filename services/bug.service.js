@@ -13,27 +13,33 @@ const PAGE_SIZE = 5
 const bugs = utilService.readJsonFile('data/bug.json')
 
 
-function query(filterBy = { txt: '', severity: 0, sortBy: { type: 'title', desc: 1 } }) {
+function query(filterBy = { txt: '', severity: 0, userId: '' }, sortBy = { type: '', desc: 1 }) {
     var bugsToReturn = bugs
 
     if (filterBy.txt) {
-    const regex = new RegExp(filterBy.txt, 'i')
-    bugsToReturn = bugs.filter(bug => regex.test(bug.title))
+        const regex = new RegExp(filterBy.txt, 'i')
+        bugsToReturn = bugs.filter(bug => regex.test(bug.title))
     }
 
     if (filterBy.severity) {
-        bugsToReturn = bugs.filter(bug => bug.severity > filterBy.severity)
+        bugsToReturn = bugsToReturn.filter(bug => bug.severity > filterBy.severity)
     }
 
-    // if (filterBy.labels) {
-    //     const labelsToFilter = filterBy.labels
-    //     bugs = bugs.filter((bug) =>
-    //         labelsToFilter.every((label) => bug.labels.includes(label))
-    //     )
-    // }
+    console.log('filterBy.userId:', filterBy.userId)
+
+    if (filterBy.userId) {
+        bugsToReturn = bugsToReturn.filter((bug) => bug.creator._id === filterBy.userId)
+    }
+
+    if (filterBy.labels) {
+        const labelsToFilter = filterBy.labels
+        bugsToReturn = bugsToReturn.filter((bug) =>
+            labelsToFilter.some((label) => bug.labels.includes(label))
+        )
+    }
 
     // sort
-    const sortBy = filterBy.sortBy
+    // const sortBy = filterBy.sortBy
     if (sortBy.type === 'title') {
         bugsToReturn.sort((b1, b2) => (sortBy.desc) * (b1.title.localeCompare(b2.title)))
     }

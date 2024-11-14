@@ -48,11 +48,11 @@ export function BugIndex() {
     }
 
     function onSetSort(sortBy) {
-        // setSortBy(prevSort => ({ ...prevSort, ...sortBy }))
-        setFilterBy(prevFilter => ({
-            ...prevFilter,
-            sortBy: { ...prevFilter.sortBy, ...sortBy }
-        }))
+        setSortBy(prevSort => ({ ...prevSort, ...sortBy }))
+        // setFilterBy(prevFilter => ({
+        //     ...prevFilter,
+        //     sortBy: { ...prevFilter.sortBy, ...sortBy }
+        // }))
     }
 
     function onChangePageIdx(diff) {
@@ -67,8 +67,8 @@ export function BugIndex() {
             <main className="main-layout">
                 <div className="content-layout">
                     <div>
-                        <BugFilter onSetFilter={onSetFilter} filterBy={{ ...filterBy }} />
-                        <BugSort onSetSort={onSetSort} sortBy={{ ...filterBy.sortBy }} />
+                        <BugFilter onSetFilter={onSetFilter} filterBy={{ filterBy }} />
+                        <BugSort onSetSort={onSetSort} sortBy={{ sortBy }} />
                         <button className="btn">
                             <Link to="/bug/edit">Add Bug ⛐</Link>
                         </button>

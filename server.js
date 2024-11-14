@@ -18,13 +18,17 @@ app.get('/api/bug', (req, res) => {
     const filterBy = {
         txt: req.query.txt || '',
         severity: +req.query.severity || 0,
-        // labels: req.query.labels || ''
+        labels: req.query.labels || '',
+        userId: req.query.userId || '',
+    }
+    const sortBy = {
+        type: req.query.type || '',
+        desc: req.query.desc || 1,
     }
     if (req.query.pageIdx) filterBy.pageIdx = req.query.pageIdx
-    if (req.query.sortBy) filterBy.sortBy = JSON.parse(req.query.sortBy)
-
+    // if (req.query.sortBy) filterBy.sortBy = JSON.parse(req.query.sortBy)
     bugService
-        .query(filterBy)
+        .query(filterBy, sortBy)
         .then((bugs) => res.send(bugs))
         .catch((err) => {
             loggerService.error('Cannot get bugs', err)

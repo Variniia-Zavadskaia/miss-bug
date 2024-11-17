@@ -1,7 +1,14 @@
+import { utilService } from "../../services/util.service"
+const { useState, useEffect } = React
+
 export function BugPreview({ bug }) {
+    const [randomImgNumber, setRandomImgNumber] = useState(1)
 
+    useEffect(() => {
+        setRandomImgNumber(utilService.getRandomIntInclusive(1, 9))
+    }, [bug])
 
-    const imgSrc = `https://robohash.org/api/${bug._id}`
+    const imgSrc = `assets/img/bugs/bug${randomImgNumber}.jpg`
 
     return (
         <section className="bug-preview">

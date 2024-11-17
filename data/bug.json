@@ -1,21 +1,5 @@
 [
   {
-    "_id": "C0FF33",
-    "title": "404 Coffee Not Found",
-    "description": "problem when clicking Save",
-    "severity": 3,
-    "createdAt": 1542107359456,
-    "labels": [
-      "critical",
-      "QA-needed",
-      "dev-branch"
-    ],
-    "creator": {
-      "_id": "u104",
-      "fullname": "John Doe"
-    }
-  },
-  {
     "_id": "10F1R1T3",
     "title": "Infinite Loop Detected",
     "description": "problem when clicking Save",
@@ -114,5 +98,21 @@
       "fullname": "Sara Li",
       "isAdmin": true
     }
+  },
+  {
+    "title": "Stiv",
+    "severity": 6,
+    "creator": {
+      "_id": "u102",
+      "fullname": "Miki Ko",
+      "isAdmin": true
+    },
+    "_id": "DdTSD",
+    "createdAt": 1731843929550,
+    "labels": [
+      "critical",
+      "need-CR"
+    ],
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at."
   }
 ]

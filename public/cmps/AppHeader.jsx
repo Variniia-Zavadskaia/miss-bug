@@ -12,39 +12,40 @@ export function AppHeader() {
     const navigate = useNavigate()
     const [user, setUser] = useState(userService.getLoggedinUser())
 
-	function onLogout() {
-		userService.logout()
+    function onLogout() {
+        userService.logout()
             .then(() => onSetUser(null))
             .catch(err => showErrorMsg('OOPs try again'))
-	}
+    }
 
-	function onSetUser(user) {
-		setUser(user)
+    function onSetUser(user) {
+        setUser(user)
         navigate('/')
-	}
+    }
 
     return (
         <React.Fragment>
             <header className="flex align-center space-between">
-                <img className="logo" src="assets/img/minilogo.jpeg" />
-                <section className="nav-bar-container">
-                    <nav className="nav-bar">
-                        <NavLink to="/">Home</NavLink>
-                        <NavLink to="/bug">Bugs</NavLink>
-                        <NavLink to="/about">About</NavLink>
-                    </nav>
-                </section>
+                <img onClick={() => navigate('/')} className="logo" src="assets/img/minilogo.jpeg" />
 
-                {user ? (
-				<section className="nav-bar-container">
-					<Link className="username" to={`/user/${user._id}`}>Hello {user.fullname}</Link>
-					<button className="btnlog" onClick={onLogout}>Logout</button>
-				</section>
-			) : (
-				<section>
-					<LoginSignup onSetUser={onSetUser} />
-				</section>
-			)}
+                {!user && <LoginSignup setUser={setUser} />}
+                {user && (
+                    <section className="nav-bar-container">
+                        <nav className="nav-bar">
+                            {/* <NavLink to="/">Home</NavLink> */}
+                            <NavLink to="/bug">Bugs</NavLink>
+                            {user && <NavLink to="/user">Profile</NavLink>}
+                            {user && user.isAdmin && <NavLink to="/admin">Admin</NavLink>}
+                            <NavLink to="/about">About</NavLink>
+                        </nav>
+                        <div>
+                            <p>Hello {user.fullname}</p>
+                            <button className="btn" onClick={onLogout}>
+                                Logout
+                            </button>
+                        </div>
+                    </section>
+                )}
             </header>
             <UserMsg />
         </React.Fragment>

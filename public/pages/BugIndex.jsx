@@ -15,8 +15,8 @@ export function BugIndex() {
 
     useEffect(() => {
         loadBugs()
-        console.log(filterBy,sortBy);
-        
+        console.log(filterBy, sortBy);
+
     }, [filterBy, sortBy])
 
     function loadBugs() {
@@ -42,6 +42,44 @@ export function BugIndex() {
             })
     }
 
+    function onAddBug() {
+        const bug = {
+            title: prompt('Bug title?'),
+            severity: +prompt('Bug severity?'),
+        }
+        bugService
+            .save(bug)
+            .then(savedBug => {
+                console.log('Added Bug', savedBug)
+                setBugs(prevBugs => [...prevBugs, savedBug])
+                showSuccessMsg('Bug added')
+            })
+            .catch(err => {
+                console.log('from add bug', err)
+                showErrorMsg('Cannot add bug')
+            })
+    }
+
+    function onEditBug(bug) {
+        const severity = +prompt('New severity?')
+        const bugToSave = { ...bug, severity }
+        bugService
+            .save(bugToSave)
+            .then(savedBug => {
+                console.log('Updated Bug:', savedBug)
+                setBugs(prevBugs =>
+                    prevBugs.map(currBug =>
+                        currBug._id === savedBug._id ? savedBug : currBug
+                    )
+                )
+                showSuccessMsg('Bug updated')
+            })
+            .catch(err => {
+                console.log('from edit bug', err)
+                showErrorMsg('Cannot update bug')
+            })
+    }
+
     function onDownloadPdf() {
         window.open('/pdf', '_blank');
     }
@@ -52,10 +90,6 @@ export function BugIndex() {
 
     function onSetSort(sortBy) {
         setSortBy(prevSort => ({ ...prevSort, ...sortBy }))
-        // setFilterBy(prevFilter => ({
-        //     ...prevFilter,
-        //     sortBy: { ...prevFilter.sortBy, ...sortBy }
-        // }))
     }
 
     function onChangePageIdx(diff) {
@@ -70,16 +104,16 @@ export function BugIndex() {
             <main className="main-layout">
                 <div className="content-layout">
                     <div>
-                        <BugFilter onSetFilter={onSetFilter} filterBy={ filterBy } />
-                        <BugSort onSetSort={onSetSort} sortBy={ sortBy } />
-                        <button className="btn">
-                            <Link to="/bug/edit">Add Bug ⛐</Link>
+                        <BugFilter onSetFilter={onSetFilter} filterBy={filterBy} />
+                        <BugSort onSetSort={onSetSort} sortBy={sortBy} />
+                        <button className="btn" onClick={onAddBug}>
+                            Add Bug ⛐
                         </button>
                         <button className="btn" onClick={onDownloadPdf}>Download PDF</button>
                     </div>
 
                     <div className="bug-list-container">
-                        <BugList bugs={bugs} onRemoveBug={onRemoveBug} />
+                    <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
                         <div className="paging flex">
                             <button
                                 className="btn"

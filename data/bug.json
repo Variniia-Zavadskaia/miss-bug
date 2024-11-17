@@ -3,7 +3,7 @@
     "_id": "C0FF33",
     "title": "404 Coffee Not Found",
     "description": "problem when clicking Save",
-    "severity": 2,
+    "severity": 3,
     "createdAt": 1542107359456,
     "labels": [
       "critical",

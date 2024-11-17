@@ -11,14 +11,17 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 export function BugIndex() {
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
+    const [sortBy, setSortBy] = useState(bugService.getDefaultSortBy())
 
     useEffect(() => {
         loadBugs()
-    }, [filterBy])
+        console.log(filterBy,sortBy);
+        
+    }, [filterBy, sortBy])
 
     function loadBugs() {
         bugService
-            .query(filterBy)
+            .query(filterBy, sortBy)
             .then(setBugs)
             .catch((err) => {
                 showErrorMsg('cant load bugs')
@@ -67,8 +70,8 @@ export function BugIndex() {
             <main className="main-layout">
                 <div className="content-layout">
                     <div>
-                        <BugFilter onSetFilter={onSetFilter} filterBy={{ filterBy }} />
-                        <BugSort onSetSort={onSetSort} sortBy={{ sortBy }} />
+                        <BugFilter onSetFilter={onSetFilter} filterBy={ filterBy } />
+                        <BugSort onSetSort={onSetSort} sortBy={ sortBy } />
                         <button className="btn">
                             <Link to="/bug/edit">Add Bug ⛐</Link>
                         </button>

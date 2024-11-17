@@ -8,12 +8,14 @@ export const bugService = {
     remove,
     getById,
     downloadBudsPdf,
-    getDefaultFilter
+    getDefaultFilter,
+    getDefaultSortBy
 }
 
 
 function query(filterBy, sortBy) {
     const filterSortBy = { ...filterBy, ...sortBy }
+
     return axios.get(BASE_URL, { params: filterSortBy }).then(res => res.data)
 }
 
@@ -52,6 +54,12 @@ function getDefaultFilter() {
         severity: '',
         labels: '',
         pageIdx: 0,
+    }
+}
+function getDefaultSortBy() {
+    return {
+        type: '',
+        desc: 1,
     }
 }
 

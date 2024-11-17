@@ -66,17 +66,13 @@ function checkLogin({ username, password }) {
 }
 
 function getLoginToken(user) {
-    const str = JSON.stringify(user)
-    const encryptedStr = cryptr.encrypt(str)
-    return encryptedStr
+    return cryptr.encrypt(JSON.stringify(user))
 }
 
-function validateToken(token) {
-    if (!token) return null
-
-    const str = cryptr.decrypt(token)
-    const user = JSON.parse(str)
-    return user
+function validateToken(loginToken) {
+    const json = cryptr.decrypt(loginToken)
+    const loggedinUser = JSON.parse(json)
+    return loggedinUser
 }
 
 function _saveUsersToFile() {

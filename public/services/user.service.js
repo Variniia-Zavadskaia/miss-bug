@@ -1,60 +1,76 @@
-const STORAGE_KEY_LOGGEDIN_USER = 'loggedInUser'
-const BASE_URL = '/api/user/'
-
 export const userService = {
+    query,
     login,
-    signup,
     logout,
-    getLoggedinUser,
-
+    signup,
+    remove,
     getById,
+    getLoggedInUser,
     getEmptyCredentials
-}
-
-function login({ username, password }) {
-    return axios.post('/api/auth/login', { username, password })
-        .then(res => res.data)
-        .then(user => {
-            _setLoggedinUser(user)
-            return user
-        })
-}
-
-function signup({ username, password, fullname }) {
-    return axios.post('/api/auth/signup', { username, password, fullname })
-        .then(res => res.data)
-        .then(user => {
-            _setLoggedinUser(user)
-            return user
-        })
-}
-
-function logout() {
+  }
+  
+  const STORAGE_KEY = 'loggedinUser'
+  
+  function query() {
+    return axios.get('/api/user').then(res => {
+        console.log(res.data);
+        return res.data
+    })
+  }
+  
+  function login(credentials) {
+    console.log('credentials', credentials)
+    return axios
+      .post('/api/auth/login', credentials)
+      .then(res => res.data)
+      .then(user => {
+        console.log('user', user)
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user))
+        return user
+      })
+  }
+  
+  function signup(signupInfo) {
+    return axios
+      .post('/api/auth/signup', signupInfo)
+      .then(res => res.data)
+      .then(user => {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user))
+        return user
+      })
+  }
+  
+  function remove(userId) {
+    console.log(userId)
+    return axios.delete('/api/user/' + userId)
+  }
+  
+  function logout() {
+    sessionStorage.removeItem(STORAGE_KEY)
     return axios.post('/api/auth/logout')
-        .then(() => {
-            sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
-        })
-}
-
-function getLoggedinUser() {
-    return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
-}
-
-function getById(userId) {
-    return axios.get(BASE_URL + userId)
-        .then(res => res.data)
-}
-
-function getEmptyCredentials() {
+  }
+  
+  function getById(userId) {
+    return axios
+      .get('/api/user/' + userId)
+      .then(res => res.data)
+      .catch(err => console.log(err))
+  }
+  
+  function getEmptyCredentials() {
     return {
-        username: '',
-        password: '',
-        fullname: ''
+      username: '',
+      password: '',
+      fullname: ''
     }
-}
-
-function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin }
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(userToSave))
-    return userToSave
-}
+  }
+  
+  function getLoggedInUser() {
+    return _getUserFromSession()
+  }
+  
+  function _getUserFromSession() {
+    const entity = sessionStorage.getItem(STORAGE_KEY)
+    return JSON.parse(entity)
+  }
+  

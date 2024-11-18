@@ -23,20 +23,22 @@ function query() {
 }
 
 function getById(userId) {
-    var user = users.find(user => user._id === userId)
+    const user = users.find(user => user._id === userId)
     if (!user) return Promise.reject('User not found!')
 
-    user = {
-        _id: user._id,
-        username: user.username,
-        fullname: user.fullname,
-    }
+    // user = {
+    //     _id: user._id,
+    //     username: user.username,
+    //     fullname: user.fullname,
+    // }
 
     return Promise.resolve(user)
 }
 
 function remove(userId) {
-    users = users.filter(user => user._id !== userId)
+    const idx = users.findIndex((user) => user._id === userId)
+    if (idx === -1) return Promise.reject('sorry not found')
+    users.splice(idx, 1)
     return _saveUsersToFile()
 }
 

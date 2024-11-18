@@ -1,4 +1,4 @@
-import { utilService } from "../../services/util.service"
+import { utilService } from "../services/util.service.js"
 const { useState, useEffect } = React
 
 export function BugPreview({ bug }) {

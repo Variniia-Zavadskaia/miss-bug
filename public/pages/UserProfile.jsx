@@ -8,7 +8,7 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 export function UserProfile() {
 
-    const [user, setUser] = useState(userService.getLoggedinUser())
+    const [user, setUser] = useState(userService.getLoggedInUser())
     const [bugs, setBugs] = useState([])
     const navigate = useNavigate()
 
@@ -17,13 +17,14 @@ export function UserProfile() {
             navigate('/')
             return
         }
+        
         loadUserBugs()
     }, [user])
 
     function loadUserBugs() {
-        userService.query({ userId: user._id }).then(res => {
-            console.log('res:', res)
-            setBugs(res.bugs)
+        bugService.query({ userId: user._id }).then(bugs => {
+            console.log('bugs:', bugs)
+            setBugs(bugs)
         })
     }
 
@@ -65,7 +66,7 @@ export function UserProfile() {
     //     navigate('/')
     // }
 
-    if (!user) return <div>Loading...</div>
+    if (!user) return null
 
     return <section className="user-details">
         <h1>User {user.fullname}</h1>

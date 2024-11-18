@@ -16,7 +16,8 @@ export const bugService = {
 function query(filterBy, sortBy) {
     const filterSortBy = { ...filterBy, ...sortBy }
 
-    return axios.get(BASE_URL, { params: filterSortBy }).then(res => res.data)
+    return axios.get(BASE_URL, { params: filterSortBy }).then(res => {console.log(res);
+     return res.data})
 }
 
 
@@ -56,13 +57,13 @@ function getDefaultFilter() {
         pageIdx: 0,
     }
 }
+
 function getDefaultSortBy() {
     return {
         type: '',
         desc: 1,
     }
 }
-
 
 function downloadBudsPdf() {
     return axios.get(BASE_URL + 'pdf').then(res => res.data)

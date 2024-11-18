@@ -1,67 +1,48 @@
-function createEventEmitter() {
-    const listenersMap = {}
-    // Trick for DEBUG
-    // window.mapmap = listenersMap
-    return {
-        // Use this function to subscribe to an event
-        on(evName, listener) {
-            listenersMap[evName] = (listenersMap[evName]) ? [...listenersMap[evName], listener] : [listener]
-            return () => {
-                listenersMap[evName] = listenersMap[evName].filter(func => func !== listener)
-            }
-        },
-        // Use this function to emit an event
-        emit(evName, data) {
-            if (!listenersMap[evName]) return
-            listenersMap[evName].forEach(listener => listener(data))
-        }
+export function showUserMsg(txt, type = '') {
+    eventBusService.emit('show-user-msg', { txt, type })
+}
+export function showSuccessMsg(txt) {
+    showUserMsg(txt, 'success')
+}
+export function showErrorMsg(txt) {
+    showUserMsg(txt, 'error')
+}
+
+export const eventBusService = { on, emit }
+
+function on(eventName, listener) {
+    const callListener = ({ detail }) => {
+        listener(detail)
+    }
+    window.addEventListener(eventName, callListener)
+    return () => {
+        window.removeEventListener(eventName, callListener)
     }
 }
 
-export const eventBusService = createEventEmitter()
-
-
-////////////////////////////////////////////////////
-
-
-
-export function showUserMsg(msg) {
-    eventBusService.emit('show-user-msg', msg)
+function emit(eventName, data) {
+    window.dispatchEvent(new CustomEvent(eventName, { detail: data }))
 }
 
-export function showSuccessMsg(txt) {
-    showUserMsg({ txt, type: 'success' })
-}
-
-export function showErrorMsg(txt) {
-    showUserMsg({ txt, type: 'error' })
-}
-
-// window.showSuccessMsg = showSuccessMsg
-// window.showErrorMsg = showErrorMsg
 
 
+window.myBus = eventBusService
+window.showUserMsg = showUserMsg
 
-// Service Testing:
-// Example for using the service
-eventBusService.on('some-event', (data) => {
-    console.log('Got some-event:', data)
-})
-
-
-eventBusService.emit('some-event', { num: 100, blabla: 'Bla!' })
-
-
-// const unsubscribe = eventBusService.on('some-event', (data) => {
-//     console.log('Me Too!', data)
-// })
-
-// eventBusService.emit('some-event', { num: 100 })
-
-// Just as example - unsubscribe after 2 secs
-// setTimeout(() => {
-//     unsubscribe()
+// eventBusService.on('baba', (x)=>console.log('Hi Baba', x))
+// eventBusService.on('baba', (x)=>console.log('Hello Baba Ji', x))
+// eventBusService.emit('baba', [5, 8, 11])
+// setTimeout(()=>{
+//     eventBusService.emit('baba', 17)
 // }, 2000)
-// setTimeout(() => eventBusService.emit('some-event', { num: 999 }), 3000)
 
+/* Listening Component...
+    import {eventBusService} from 'path...event-bus-service'
+    eventBusService.on('some-event', (dataFromEvent) => {
+    do something with dataFromEvent
+    })
+
+   Receiving Component...
+    eventBusService.emit('some-event', data)
+*/
 

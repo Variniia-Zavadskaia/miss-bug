@@ -14,8 +14,8 @@ export function BugIndex() {
     const [sortBy, setSortBy] = useState(bugService.getDefaultSortBy())
 
     useEffect(() => {
-        loadBugs()
         console.log(filterBy, sortBy);
+        loadBugs()
 
     }, [filterBy, sortBy])
 

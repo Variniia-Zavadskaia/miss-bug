@@ -29,7 +29,8 @@ app.get('/api/bug', (req, res) => {
     // if (req.query.sortBy) filterBy.sortBy = JSON.parse(req.query.sortBy)
     bugService
         .query(filterBy, sortBy)
-        .then((bugs) => { res.send(bugs) })
+        .then((bugs) => { res.send(bugs); console.log(res);
+        })
         .catch((err) => {
             loggerService.error('Cannot get bugs', err)
             res.status(500).send('Cannot get bugs')

@@ -13,6 +13,9 @@ export function BugList({ bugs, onRemoveBug, onEditBug }) {
 
     //     return true
     // }
+console.log(bugs);
+
+
     return (
         <section className="bug-list grid cards">
             {bugs.map(bug => (

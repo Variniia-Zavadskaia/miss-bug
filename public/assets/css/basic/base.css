@@ -25,5 +25,5 @@ footer {
     font-size: 1rem; /* Increased font size for visibility */
     text-align: center;
     padding: 0.5rem 0; /* Adds padding to the footer */
-    z-index: 1;
+    z-index: -1;
 }

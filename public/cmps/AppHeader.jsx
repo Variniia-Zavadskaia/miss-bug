@@ -28,7 +28,7 @@ export function AppHeader() {
             <header className="flex align-center space-between">
                 <img onClick={() => navigate('/')} className="logo" src="assets/img/minilogo.jpeg" />
 
-                {!user && <LoginSignup setUser={setUser} />}
+                {!user && <LoginSignup onSetUser={onSetUser} />}
                 {user && (
                     <section className="nav-bar-container">
                         <nav className="nav-bar">

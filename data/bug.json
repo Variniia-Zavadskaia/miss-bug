@@ -1,35 +1,34 @@
 [
   {
-    "_id": "10F1R1T3",
-    "title": "Infinite Loop Detected",
-    "description": "problem when clicking Save",
-    "severity": 4,
-    "createdAt": 1542107359454,
+    "title": "Test bug",
+    "severity": 5,
+    "creator": {
+      "_id": "nirnQ",
+      "fullname": "Nuna Pho"
+    },
+    "_id": "ODLKy",
+    "createdAt": 1731944263860,
+    "labels": [
+      "critical",
+      "need-CR"
+    ],
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at."
+  },
+  {
+    "_id": "MNO345",
+    "title": "Search function not returning results",
+    "description": "No results appear when searching",
+    "severity": 2,
+    "createdAt": 1546111399458,
     "labels": [
       "critical",
       "need-CR",
-      "dev-branch"
+      "test-branch"
     ],
     "creator": {
       "_id": "u102",
       "fullname": "Miki Ko",
       "isAdmin": true
-    }
-  },
-  {
-    "_id": "K3YB0RD",
-    "title": "Keyboard Not Found",
-    "description": "problem when clicking Save",
-    "severity": 1,
-    "createdAt": 1542107359455,
-    "labels": [
-      "low-priority",
-      "need-CR",
-      "test-branch"
-    ],
-    "creator": {
-      "_id": "u105",
-      "fullname": "Ella Rae"
     }
   },
   {
@@ -42,23 +41,6 @@
       "data-integrity",
       "analytics",
       "need-CR"
-    ],
-    "creator": {
-      "_id": "u102",
-      "fullname": "Miki Ko",
-      "isAdmin": true
-    }
-  },
-  {
-    "_id": "MNO345",
-    "title": "Search function not returning results",
-    "description": "No results appear when searching",
-    "severity": 2,
-    "createdAt": 1546111399458,
-    "labels": [
-      "critical",
-      "need-CR",
-      "test-branch"
     ],
     "creator": {
       "_id": "u102",
@@ -100,19 +82,36 @@
     }
   },
   {
-    "title": "Stiv",
-    "severity": 6,
+    "_id": "K3YB0RD",
+    "title": "Keyboard Not Found",
+    "description": "problem when clicking Save",
+    "severity": 1,
+    "createdAt": 1542107359455,
+    "labels": [
+      "low-priority",
+      "need-CR",
+      "test-branch"
+    ],
+    "creator": {
+      "_id": "u105",
+      "fullname": "Ella Rae"
+    }
+  },
+  {
+    "_id": "10F1R1T3",
+    "title": "Infinite Loop Detected",
+    "description": "problem when clicking Save",
+    "severity": 4,
+    "createdAt": 1542107359454,
+    "labels": [
+      "critical",
+      "need-CR",
+      "dev-branch"
+    ],
     "creator": {
       "_id": "u102",
       "fullname": "Miki Ko",
       "isAdmin": true
-    },
-    "_id": "DdTSD",
-    "createdAt": 1731843929550,
-    "labels": [
-      "critical",
-      "need-CR"
-    ],
-    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, earum sed corrupti voluptatum voluptatem at."
+    }
   }
 ]

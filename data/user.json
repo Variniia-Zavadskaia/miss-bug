@@ -14,12 +14,6 @@
     "isAdmin": true
   },
   {
-    "_id": "u104",
-    "username": "john",
-    "fullname": "John Doe",
-    "password": "john"
-  },
-  {
     "_id": "u105",
     "username": "ella",
     "fullname": "Ella Rae",
@@ -29,12 +23,6 @@
     "username": "nuna",
     "password": "nuna",
     "fullname": "Nuna Pho",
-    "_id": "fKxHV"
-  },
-  {
-    "username": "nuna",
-    "password": "nuna",
-    "fullname": "Nuna Pho",
-    "_id": "gQs26"
+    "_id": "nirnQ"
   }
 ]

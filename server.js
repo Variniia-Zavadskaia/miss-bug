@@ -29,7 +29,8 @@ app.get('/api/bug', (req, res) => {
     // if (req.query.sortBy) filterBy.sortBy = JSON.parse(req.query.sortBy)
     bugService
         .query(filterBy, sortBy)
-        .then((bugs) => { res.send(bugs); console.log(res);
+        .then((bugs) => {
+            res.send(bugs); console.log(res);
         })
         .catch((err) => {
             loggerService.error('Cannot get bugs', err)
@@ -169,6 +170,19 @@ app.get('/api/user/:userId', (req, res) => {
         })
 })
 
+app.delete('/api/user/:userId', (req, res) => {
+    const { userId } = req.params
+    bugService
+        .hasBugs(userId)
+        .then(() => {
+            userService
+                .remove(userId)
+                .then(() => res.send('Removed!'))
+                .catch((err) => res.status(402).send(err))
+        })
+        .catch((err) => res.status(401).send('Cannot delete user with bugs'))
+})
+
 // Auth API
 app.post('/api/auth/login', (req, res) => {
     const credentials = req.body
@@ -190,11 +204,17 @@ app.post('/api/auth/signup', (req, res) => {
 
     userService.save(credentials)
         .then(user => {
+            console.log(user);
+
             if (user) {
+                console.log('kkk');
+
                 const loginToken = userService.getLoginToken(user)
                 res.cookie('loginToken', loginToken)
                 res.send(user)
             } else {
+                console.log('lll');
+
                 res.status(400).send('Cannot signup')
             }
         })

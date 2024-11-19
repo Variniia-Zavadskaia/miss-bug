@@ -33,7 +33,8 @@ export const userService = {
   function signup(signupInfo) {
     return axios
       .post('/api/auth/signup', signupInfo)
-      .then(res => res.data)
+      .then(res => {console.log(res.data);
+       return res.data})
       .then(user => {
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user))
         return user

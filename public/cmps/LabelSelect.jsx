@@ -1,7 +1,6 @@
 const { useState, useEffect } = React
 
-export function LabelSelector({ onLabelChange }) {
-    const labels = ['critical', 'need-CR', 'dev-branch', 'famous', 'high', 'popular']
+export function LabelSelector({ labels, onLabelChange }) {
     const [selectedLabels, setSelectedLabels] = useState([])
 
     useEffect(() => {

@@ -13,12 +13,12 @@ export function BugPreview({ bug }) {
     return (
         <section className="bug-preview">
             <h4>{bug.title}</h4>
-            <img src={imgSrc} alt={`Bug`} />
+            <img src={imgSrc} alt={`Bug ${randomImgNumber}`} />
             <p>
                 Severity: <span>{bug.severity}</span>
             </p>
             <p>
-                Owner ID: <span>{bug.ownerId}</span>
+                Owner ID: <span>{bug.creator.fullname}</span>
             </p>
             <p>
                 Created at: <span>{new Date(bug.createdAt).toDateString()}</span>

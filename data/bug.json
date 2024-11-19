@@ -96,22 +96,5 @@
       "_id": "u105",
       "fullname": "Ella Rae"
     }
-  },
-  {
-    "_id": "10F1R1T3",
-    "title": "Infinite Loop Detected",
-    "description": "problem when clicking Save",
-    "severity": 4,
-    "createdAt": 1542107359454,
-    "labels": [
-      "critical",
-      "need-CR",
-      "dev-branch"
-    ],
-    "creator": {
-      "_id": "u102",
-      "fullname": "Miki Ko",
-      "isAdmin": true
-    }
   }
 ]

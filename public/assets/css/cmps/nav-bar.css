@@ -5,7 +5,10 @@
 
 .nav-bar {
     display: flex;
+    margin-inline-end: 2rem;
+    align-items: center;
     gap: 20px;
+
 }
 
 .nav-bar a {
@@ -26,19 +29,4 @@
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.btnlog {
-    padding: 5px 10px;
-    border: none;
-    background-color: #38bdf8;
-    color: #ffffff;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btnlog:hover {
-    background-color: #0284c7;
 }

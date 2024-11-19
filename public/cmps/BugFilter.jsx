@@ -3,9 +3,9 @@ import { LabelSelector } from './LabelSelect.jsx'
 
 export function BugFilter({ filterBy, onSetFilter }) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
-
+    const labels = ['critical', 'need-CR', 'test-branch', 'data-integrity', 'analytics', 'high-priority', 'frontend', 'dev-branch', 'QA-needed', 'low-priority']
     useEffect(() => {
-        onSetFilter(filterByToEdit) 
+        onSetFilter(filterByToEdit)
     }, [filterByToEdit])
 
     function handleChange({ target }) {
@@ -47,7 +47,7 @@ export function BugFilter({ filterBy, onSetFilter }) {
                 value={severity}
                 onChange={handleChange}
             />
-            <LabelSelector onLabelChange={onLabelChange} />
+            <LabelSelector labels={labels} onLabelChange={onLabelChange} />
         </form>
     )
 }

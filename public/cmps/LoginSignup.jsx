@@ -61,7 +61,7 @@ export function LoginSignup({ onSetUser }) {
                     onChange={handleChange}
                     required
                 />}
-                <button className="btnlog">{isSignup ? 'Signup' : 'Login'}</button>
+                <button className="btn">{isSignup ? 'Signup' : 'Login'}</button>
             </form>
 
             <div className="btns">

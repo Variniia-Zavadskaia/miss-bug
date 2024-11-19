@@ -14,7 +14,7 @@
 }
 
 .login-form input {
-    padding: 5px 8px;
+    padding: 3px 6px;
     font-size: 0.9rem;
     border: 1px solid #d1d5db;
     border-radius: 3px;
@@ -27,27 +27,11 @@
     outline: none;
 }
 
-.login-form button {
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #38bdf8;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-form button:hover {
-    background-color: #0284c7;
-}
-
 /* Signup/Login Link */
 .btns {
-    font-size: 0.85rem;
+    font-size: 1rem;
     text-align: center;
-    margin-top: 5px;
+    margin-inline-end: 0;
 }
 
 .btns a {
@@ -55,7 +39,6 @@
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
-    
 }
 
 .btns a:hover {

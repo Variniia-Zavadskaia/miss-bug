@@ -24,6 +24,7 @@ export function BugSort({ onSetSort, sortBy }) {
                 value={sortByToEdit.type}
                 onChange={handleChange}
             >
+                <option value={''}>----</option>
                 <option value="title">Title</option>
                 <option value="createdAt">Date</option>
                 <option value="severity">Severity</option>

@@ -67,7 +67,7 @@ export function UserProfile() {
 
     if (!user) return null
 
-    return <section className="user-details">
+    return <section className="user-details main-layout">
         <h1>User {user.fullname}</h1>
         {!bugs || (!bugs.length && <h2>No bugs to show</h2>)}
         {bugs && bugs.length > 0 && <h3>Manage your bugs</h3>}

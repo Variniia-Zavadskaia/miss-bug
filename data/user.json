@@ -36,5 +36,17 @@
     "password": "puki",
     "fullname": "Lof",
     "_id": "2yXCk"
+  },
+  {
+    "username": "pupu",
+    "password": "pupu",
+    "fullname": "Alice",
+    "_id": "JBJkF"
+  },
+  {
+    "username": "nuna",
+    "password": "nuna",
+    "fullname": "Nuna Pho",
+    "_id": "qmqU0"
   }
 ]

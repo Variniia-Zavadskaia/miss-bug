@@ -34,7 +34,7 @@ app.get('/api/bug', (req, res) => {
         })
         .catch((err) => {
             loggerService.error('Cannot get bugs', err)
-            res.status(500).send('Cannot get bugs')
+            res.status(401).send('Cannot get bugs')
         })
 })
 
@@ -53,7 +53,7 @@ app.get('/pdf', (req, res) => {
             res.sendFile(`${process.cwd()}/pdfs/${fileName}.pdf`);
         }).catch(err => {
             loggerService.error('Cannot download PDF', err);
-            res.status(500).send('We have a problem, try again soon');
+            res.status(401).send('We have a problem, try again soon');
         })
     })
 })
@@ -96,7 +96,7 @@ app.post('/api/bug', (req, res) => {
         })
         .catch((err) => {
             loggerService.error('Had issues adding:', err)
-            res.status(500).send('Had issues adding:', err)
+            res.status(401).send('Had issues adding:', err)
         })
 })
 
@@ -116,7 +116,7 @@ app.put('/api/bug', (req, res) => {
         })
         .catch((err) => {
             loggerService.error('Had issues editing:', err)
-            res.status(500).send('Had issues editing:', err)
+            res.status(403).send({ error: 'Not authorized to update this bug' });
         })
 })
 
@@ -143,7 +143,7 @@ app.get('/api/user', (req, res) => {
         .then(users => res.send(users))
         .catch(err => {
             loggerService.error('Cannot load users', err)
-            res.status(400).send('Cannot load users')
+            res.status(401).send('Cannot load users')
         })
 })
 
@@ -154,7 +154,7 @@ app.get('/api/user/:userId', (req, res) => {
         .then(user => res.send(user))
         .catch(err => {
             loggerService.error('Cannot load user', err)
-            res.status(400).send('Cannot load user')
+            res.status(401).send('Cannot load user')
         })
 })
 
@@ -203,7 +203,7 @@ app.post('/api/auth/signup', (req, res) => {
             } else {
                 console.log('lll');
 
-                res.status(400).send('Cannot signup')
+                res.status(401).send('Cannot signup')
             }
         })
 })

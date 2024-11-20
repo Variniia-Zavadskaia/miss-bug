@@ -80,7 +80,16 @@ export function BugIndex() {
             })
     }
 
+
     function onDownloadPdf() {
+        // bugService
+        //   .downloadPdf()
+        //   .then(() => {
+        //     console.log('PDF Downloaded')
+        //   })
+        //   .catch((err) => {
+        //     console.error('Failed to generate PDF:', err)
+        //   })
         window.open('/pdf', '_blank');
     }
 
@@ -113,7 +122,7 @@ export function BugIndex() {
                     </div>
 
                     <div className="bug-list-container">
-                    <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+                        <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
                         <div className="paging flex">
                             <button
                                 className="btn"

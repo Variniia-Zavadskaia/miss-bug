@@ -39,16 +39,23 @@ app.get('/api/bug', (req, res) => {
 })
 
 // PDF
-app.get('/api/bug/pdf', (req, res) => {
-    bugService
-        .getPdf()
-        .then((r) => {
-            res.send(r)
+app.get('/pdf', (req, res) => {
+    const path = './pdfs/'
+
+    bugService.query().then(bugs => {
+        bugs.sort((a, b) => b.createdAt - a.createdAt)
+        const rows = bugs.map(({ title, description, severity }) => [title, description, severity])
+        const headers = ['Title', 'Description', 'Severity']
+        const fileName = 'bugs'
+
+        pdfService.createPdf({ headers, rows, title: 'Bugs report', fileName }).then(() => {
+            res.setHeader('Content-Type', 'application/pdf');
+            res.sendFile(`${process.cwd()}/pdfs/${fileName}.pdf`);
+        }).catch(err => {
+            loggerService.error('Cannot download PDF', err);
+            res.status(500).send('We have a problem, try again soon');
         })
-        .catch((err) => {
-            loggerService.error('Cannot download Buds Pdf', err)
-            res.status(400).send('Cannot download Buds Pdf')
-        })
+    })
 })
 
 // Read
@@ -57,7 +64,7 @@ app.get('/api/bug/:bugId', (req, res) => {
     let visitedBugIds = req.cookies.visitedBugIds || []
     if (!visitedBugIds.includes(bugId)) visitedBugIds.push(bugId)
     if (visitedBugIds.length > 3) return res.status(401).send('Wait for a bit')
-    res.cookie('visitedBugIds', visitedBugIds, { maxAge: 1000 * 60 * 3 })
+    // res.cookie('visitedBugIds', visitedBugIds, { maxAge: 1000 * 60 * 3 })
 
     bugService
         .getById(bugId)
@@ -129,25 +136,6 @@ app.delete('/api/bug/:bugId', (req, res) => {
             res.status(401).send('cannot remove bug')
         })
 })
-
-// app.get('/pdf', (req, res) => {
-//     const path = './pdfs/'
-
-//     bugService.query().then(bugs => {
-//         bugs.sort((a, b) => b.createdAt - a.createdAt)
-//         const rows = bugs.map(({ title, description, severity }) => [title, description, severity])
-//         const headers = ['Title', 'Description', 'Severity']
-//         const fileName = 'bugs'
-
-//         pdfService.createPdf({ headers, rows, title: 'Bugs report', fileName }).then(() => {
-//             res.setHeader('Content-Type', 'application/pdf');
-//             res.sendFile(`${process.cwd()}/pdfs/${fileName}.pdf`);
-//         }).catch(err => {
-//             loggerService.error('Cannot download PDF', err);
-//             res.status(500).send('We have a problem, try again soon');
-//         })
-//     })
-// })
 
 // User API
 app.get('/api/user', (req, res) => {

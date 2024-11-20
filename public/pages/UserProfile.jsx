@@ -2,7 +2,7 @@ const { useState, useEffect } = React
 const { useParams, useNavigate } = ReactRouterDOM
 
 import { BugList } from '../cmps/BugList.jsx'
-import { bugService } from '../../services/bug.service.js'
+import { bugService } from '../services/bug.service.js'
 import { userService } from '../services/user.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 

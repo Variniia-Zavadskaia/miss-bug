@@ -2,7 +2,7 @@ import fs from 'fs'
 
 import { utilService } from './util.service.js'
 import { loggerService } from './logger.service.js'
-import { pdfService } from './pdf.service.js'
+// import { pdfService } from './pdf.service.js'
 
 const gBugs = utilService.readJsonFile('data/bug.json')
 const PAGE_SIZE = 5
@@ -13,7 +13,7 @@ export const bugService = {
     remove,
     save,
     hasBugs,
-    getPdf
+    // getPdf
 }
 
 
@@ -109,10 +109,10 @@ function hasBugs(userId) {
     return Promise.resolve()
 }
 
-function getPdf() {
-    pdfService.buildBugsPDF(gBugs) //pdf bonus
-    return Promise.resolve()
-}
+// function getPdf() {
+//     pdfService.buildBugsPDF(gBugs) //pdf bonus
+//     return Promise.resolve()
+// }
 
 function _saveBugsToFile() {
     return new Promise((resolve, reject) => {

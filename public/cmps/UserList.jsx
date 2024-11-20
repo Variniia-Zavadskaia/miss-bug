@@ -1,4 +1,4 @@
-import { UserPreview } from './UserPreview.jsx'
+import { UserPreview } from './UserPrewiew.jsx'
 
 export function UserList({ users, onRemoveUser }) {
     console.log(users);
